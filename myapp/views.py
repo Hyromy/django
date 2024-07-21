@@ -1,4 +1,4 @@
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse
 from .models import Project, Task
 from django.shortcuts import get_object_or_404, render
 
@@ -8,14 +8,27 @@ def hi(request, parametro):
     # return HttpResponse("<h1>Hola %s</h1>" % parametro)
 
 def index(request):
-    return render(request, "index.html")
+    data = {
+        "title": "Titulo de la pagina"
+    }
+
+    return render(request, "index.html", data)
 
 def about(request):
-    return render(request, "about.html")
+    data = {
+        "username": "Hyromy"
+    }
+
+    return render(request, "about.html", data)
 
 def projects(request):
-    projects = list(Project.objects.values())
-    return JsonResponse(projects, safe = False)
+    projects = Project.objects.all()
+
+    data = {
+        "projects": projects
+    }
+
+    return render(request, "projects.html", data)
 
 def tasks(request, id):
     task = get_object_or_404(Task, id = id)
